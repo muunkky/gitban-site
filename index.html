@@ -3,92 +3,133 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gitban — git-native kanban for AI agents</title>
-<meta name="description" content="A persistent backlog for coding agents. Cards are markdown, state is filenames, the board is your repo. Free for solo and open source; commercial license for organizations." />
-<meta property="og:title" content="gitban — git-native kanban for AI agents" />
-<meta property="og:description" content="Cards are markdown. State is filenames. The board lives in your repo. A context substrate for AI agents, not an orchestration framework." />
+<title>gitban — the autopilot for Claude Code</title>
+<meta name="description" content="Real engineers don't vibe code. gitban is a drop-in MCP that turns Claude Code into an autonomous software-engineering harness — building production-grade code to your spec, governed by your designs. Local, hermetic, sovereign." />
+<meta property="og:title" content="gitban — real engineers don't vibe code" />
+<meta property="og:description" content="The autopilot for Claude Code. Build production-grade software to spec — autonomously, governed by your designs. Local, hermetic, sovereign." />
 <meta property="og:type" content="website" />
 <!--
   ============================================================================
-  SELLING CONFIG — replace these two placeholder URLs when Stripe is live.
-  Until then the Buy buttons fall back to a mailto: so the site works for
-  MANUAL fulfilment today (you mint a license with gitban-sign and email it).
-  Create Stripe Payment Links (no backend needed), then paste the URLs here.
+  SELLING: Buy buttons fall back to mailto for MANUAL fulfilment today (mint a
+  license with gitban-sign, email it). Replace the mailto hrefs with Stripe
+  Payment Link URLs when Stripe is live. Pricing: Solo free / Commercial $5k-yr
+  / Enterprise $250k-yr (site license, negotiable up via Contact sales).
   ============================================================================
 -->
 <style>
   :root{
-    --bg:#0b0d10; --bg-soft:#12151a; --panel:#15191f; --line:#232a33;
-    --ink:#e8edf2; --muted:#9aa7b4; --dim:#6b7682;
-    --accent:#5ad17a; --accent-ink:#0b0d10; --amber:#e8b24a;
+    --bg:#0a0c0f; --bg-soft:#0f1318; --panel:#13181e; --panel2:#171d24;
+    --line:#222a33; --line2:#2c3742;
+    --ink:#eef3f7; --muted:#9aa7b4; --dim:#6b7682;
+    --accent:#5ad17a; --accent-ink:#08110b; --amber:#e8b24a; --red:#ef6b6b;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
-    line-height:1.55;-webkit-font-smoothing:antialiased;}
+    line-height:1.6;-webkit-font-smoothing:antialiased}
   a{color:inherit}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+  .center{text-align:center}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
   /* nav */
-  nav{position:sticky;top:0;z-index:10;background:rgba(11,13,16,.82);
-    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;gap:28px;height:60px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(10,12,15,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:26px;height:60px}
   .brand{font-family:var(--mono);font-weight:600;letter-spacing:.04em;font-size:16px}
   .brand b{color:var(--accent)}
-  nav .links{margin-left:auto;display:flex;gap:24px;align-items:center}
+  nav .links{margin-left:auto;display:flex;gap:22px;align-items:center}
   nav .links a{color:var(--muted);text-decoration:none;font-size:14px}
   nav .links a:hover{color:var(--ink)}
-  .btn{display:inline-block;border-radius:8px;padding:10px 18px;font-weight:600;
-    font-size:14px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:.15s}
+  .btn{display:inline-block;border-radius:8px;padding:11px 20px;font-weight:600;font-size:14px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:.15s;white-space:nowrap}
   .btn-primary{background:var(--accent);color:var(--accent-ink)}
   .btn-primary:hover{filter:brightness(1.08)}
-  .btn-ghost{border-color:var(--line);color:var(--ink)}
+  .btn-ghost{border-color:var(--line2);color:var(--ink)}
   .btn-ghost:hover{border-color:var(--dim);background:var(--bg-soft)}
   /* hero */
-  header.hero{padding:84px 0 64px;border-bottom:1px solid var(--line);
-    background:radial-gradient(1200px 400px at 70% -10%,rgba(90,209,122,.08),transparent)}
-  .tag{font-family:var(--mono);font-size:12.5px;color:var(--accent);
-    letter-spacing:.08em;text-transform:uppercase;margin:0 0 18px}
-  h1{font-size:clamp(34px,5vw,54px);line-height:1.08;margin:0 0 18px;letter-spacing:-.02em}
+  header.hero{padding:90px 0 60px;border-bottom:1px solid var(--line);background:radial-gradient(1100px 420px at 72% -12%,rgba(90,209,122,.10),transparent)}
+  h1{font-size:clamp(38px,6vw,64px);line-height:1.04;margin:0 0 20px;letter-spacing:-.025em;font-weight:760}
   h1 .b{color:var(--accent)}
-  .lede{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:620px;margin:0 0 28px}
+  .sub{font-size:clamp(17px,2.2vw,21px);color:var(--muted);max-width:640px;margin:0 0 30px}
+  .sub b{color:var(--ink);font-weight:600}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-  .cta-note{font-size:13px;color:var(--dim);margin-top:14px;font-family:var(--mono)}
-  .code{margin-top:44px;background:var(--panel);border:1px solid var(--line);
-    border-radius:12px;overflow:hidden;font-family:var(--mono);font-size:13.5px}
+  .proofstrip{margin-top:30px;font-family:var(--mono);font-size:13px;color:var(--dim);line-height:1.9}
+  .proofstrip .k{color:var(--amber)}
+  .proofstrip .pay{color:var(--accent)}
+  .code{margin-top:46px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-family:var(--mono);font-size:13.5px}
   .code .top{display:flex;gap:7px;padding:12px 16px;border-bottom:1px solid var(--line)}
   .code .top i{width:11px;height:11px;border-radius:50%;background:#2d343d;display:inline-block}
-  .code pre{margin:0;padding:18px 20px;overflow-x:auto;color:#cdd7e0;line-height:1.7}
-  .code .c{color:var(--dim)} .code .g{color:var(--accent)} .code .a{color:var(--amber)}
+  .code pre{margin:0;padding:18px 20px;overflow-x:auto;color:#cdd7e0;line-height:1.75}
+  .code .c{color:var(--dim)} .code .g{color:var(--accent)} .code .a{color:var(--amber)} .code .r{color:var(--red)}
   /* sections */
-  section{padding:72px 0;border-bottom:1px solid var(--line)}
-  h2{font-size:clamp(24px,3vw,32px);margin:0 0 12px;letter-spacing:-.01em}
-  .sub{color:var(--muted);max-width:640px;margin:0 0 40px}
-  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px}
-  .card h3{margin:0 0 8px;font-size:17px}
-  .card p{margin:0;color:var(--muted);font-size:14.5px}
-  .card .k{font-family:var(--mono);color:var(--accent);font-size:12px;letter-spacing:.06em;
-    text-transform:uppercase;display:block;margin-bottom:14px}
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(25px,3.2vw,34px);margin:0 0 14px;letter-spacing:-.015em;line-height:1.15}
+  .lead{color:var(--muted);max-width:660px;margin:0 0 42px;font-size:16.5px}
+  /* problem */
+  .problem{background:var(--bg-soft)}
+  .nightmares{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:8px}
+  .nm{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:20px 22px}
+  .nm h4{margin:0 0 6px;font-size:16px}
+  .nm p{margin:0;color:var(--muted);font-size:14.5px}
+  .nm .src{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:10px;display:block}
+  /* reframe band */
+  .reframe{background:linear-gradient(180deg,rgba(90,209,122,.06),transparent);text-align:center}
+  .reframe h2{max-width:780px;margin:0 auto 14px}
+  .reframe .big{color:var(--accent)}
+  .reframe p{color:var(--muted);max-width:620px;margin:0 auto;font-size:16.5px}
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;position:relative}
+  .step:before{counter-increment:s;content:counter(s);font-family:var(--mono);font-size:13px;color:var(--accent-ink);background:var(--accent);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:14px}
+  .step h4{margin:0 0 7px;font-size:16.5px}
+  .step p{margin:0;color:var(--muted);font-size:14.5px}
+  .step code{font-family:var(--mono);font-size:12.5px;color:var(--accent)}
+  /* value props by buyer */
+  .buyers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .buyer{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px}
+  .buyer .who{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+  .buyer ul{list-style:none;padding:0;margin:0}
+  .buyer li{font-size:14.5px;padding:9px 0 9px 26px;position:relative;color:var(--ink);border-top:1px solid var(--line)}
+  .buyer li:first-child{border-top:none}
+  .buyer li:before{content:"";position:absolute;left:2px;top:15px;width:9px;height:9px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+  .buyer li b{color:var(--ink)} .buyer li span{color:var(--muted)}
+  /* proof */
+  .proof{background:var(--bg-soft);text-align:center}
+  .proof .meta{font-family:var(--mono);color:var(--muted);font-size:14px;max-width:680px;margin:0 auto 26px}
+  .proof .meta b{color:var(--accent)}
+  /* comparison */
+  .cmp{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  .cmp th,.cmp td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line)}
+  .cmp thead th{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);font-weight:600}
+  .cmp tbody th{font-weight:600;color:var(--ink)}
+  .cmp .us{background:rgba(90,209,122,.06)}
+  .cmp .us td,.cmp td.us{color:var(--accent)}
+  .cmp col.uscol{}
+  .catclaim{margin-top:34px;font-size:18px;line-height:1.5;color:var(--ink);border-left:3px solid var(--accent);padding-left:20px;max-width:760px}
+  .catclaim b{color:var(--accent)}
+  .archlink{margin-top:22px;font-family:var(--mono);font-size:13.5px;color:var(--muted)}
+  .archlink a{color:var(--accent);text-decoration:none}
   /* pricing */
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
-  .tier{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;
-    display:flex;flex-direction:column}
-  .tier.feature{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 12px 40px -16px rgba(90,209,122,.4)}
+  .tier{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column}
+  .tier.feature{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 16px 50px -20px rgba(90,209,122,.45)}
   .tier .name{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .tier.feature .name{color:var(--accent)}
-  .tier .price{font-size:34px;font-weight:700;margin:12px 0 2px;letter-spacing:-.02em}
+  .tier .price{font-size:33px;font-weight:740;margin:12px 0 2px;letter-spacing:-.02em}
   .tier .price small{font-size:14px;color:var(--dim);font-weight:500}
-  .tier .who{color:var(--muted);font-size:14px;margin:6px 0 18px;min-height:60px}
+  .tier .who{color:var(--muted);font-size:14px;margin:6px 0 18px;min-height:54px}
   .tier ul{list-style:none;padding:0;margin:0 0 24px;flex:1}
   .tier li{font-size:14px;color:var(--ink);padding:7px 0 7px 24px;position:relative}
-  .tier li:before{content:"";position:absolute;left:0;top:13px;width:10px;height:10px;
-    border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+  .tier li:before{content:"";position:absolute;left:0;top:13px;width:10px;height:10px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
   .tier .btn{width:100%;text-align:center}
-  .boundary{font-family:var(--mono);font-size:13.5px;color:var(--muted);background:var(--bg-soft);
-    border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 36px}
+  .boundary{font-family:var(--mono);font-size:13.5px;color:var(--muted);background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 36px}
   .boundary b{color:var(--accent)}
+  /* enterprise band */
+  .ent{background:var(--panel2);border-top:1px solid var(--line)}
+  .ent-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:10px}
+  .ent-grid div{font-size:14px;color:var(--muted);padding-left:18px;position:relative}
+  .ent-grid div:before{content:"▪";position:absolute;left:0;color:var(--accent)}
+  .ent-grid b{color:var(--ink);display:block;font-size:14.5px;margin-bottom:2px}
   /* faq */
   .faq details{border:1px solid var(--line);border-radius:10px;margin-bottom:12px;background:var(--panel)}
   .faq summary{cursor:pointer;padding:18px 20px;font-weight:600;font-size:15.5px;list-style:none}
@@ -96,66 +137,162 @@
   .faq summary:after{content:"+";float:right;color:var(--accent);font-family:var(--mono)}
   .faq details[open] summary:after{content:"\2212"}
   .faq p{padding:0 20px 20px;margin:0;color:var(--muted);font-size:14.5px}
+  /* final cta */
+  .final{text-align:center;background:radial-gradient(900px 360px at 50% 120%,rgba(90,209,122,.10),transparent)}
+  .final h2{max-width:620px;margin:0 auto 24px}
   /* footer */
-  footer{padding:48px 0;color:var(--dim);font-size:13.5px}
+  footer{padding:46px 0;color:var(--dim);font-size:13.5px}
   footer .wrap{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
   footer a{color:var(--muted);text-decoration:none} footer a:hover{color:var(--ink)}
   footer .sp{margin-left:auto}
-  @media(max-width:760px){.grid3,.price-grid{grid-template-columns:1fr}
-    nav .links a:not(.btn){display:none}}
+  @media(max-width:820px){
+    .nightmares,.steps,.buyers,.price-grid,.ent-grid{grid-template-columns:1fr}
+    .cmp{font-size:12.5px} .cmp th,.cmp td{padding:9px 8px}
+    nav .links a:not(.btn){display:none}
+  }
 </style>
 </head>
 <body>
 <nav><div class="wrap">
   <span class="brand"><b>git</b>ban</span>
   <div class="links">
+    <a href="#problem">The problem</a>
     <a href="#how">How it works</a>
+    <a href="#why">Why gitban</a>
     <a href="#pricing">Pricing</a>
-    <a href="#download">Download</a>
     <a href="https://github.com/muunkky/gitban-mcp">GitHub</a>
     <a class="btn btn-primary" href="#pricing">Get a license</a>
   </div>
 </div></nav>
 
+<!-- ② HERO -->
 <header class="hero"><div class="wrap">
-  <p class="tag">MCP server · runs offline · zero telemetry</p>
-  <h1>A backlog your agents<br/>can't <span class="b">lie</span> to.</h1>
-  <p class="lede">gitban is git-native kanban for AI coding agents. Cards are markdown, state is the filename, the board is your repo. A validation gate blocks any card marked "done" that isn't — so a pipeline of disposable agents ships real work instead of confident fiction.</p>
+  <h1>Real engineers don't<br/><span class="b">vibe code.</span></h1>
+  <p class="sub"><b>The autopilot for Claude Code.</b> A drop-in MCP that builds production-grade software <b>to your spec</b> — autonomously, governed by your designs. Built for senior engineers, not vibe coders.</p>
   <div class="cta-row">
-    <a class="btn btn-primary" href="#pricing">Get a Team license</a>
-    <a class="btn btn-ghost" href="#download">Download free (Solo)</a>
+    <a class="btn btn-primary" href="#pricing">Get a commercial license</a>
+    <a class="btn btn-ghost" href="#how">See how it works</a>
   </div>
-  <p class="cta-note">$ free for individuals &amp; open source · commercial license for orgs</p>
+  <div class="proofstrip">
+    <span class="k">45%</span> of AI-generated code ships with security flaws <span class="c">— Veracode</span> ·
+    Uber <span class="k">burned its annual AI budget in 4 months</span> <span class="c">— The Economist</span><br/>
+    <span class="pay">→ gitban is how you let agents build production code anyway.</span>
+  </div>
 
   <div class="code">
     <div class="top"><i></i><i></i><i></i></div>
-<pre><span class="c"># the board is a directory listing. state is the filename.</span>
-$ ls .gitban/cards/
-AUTH-<span class="g">todo</span>-P0-bug-login-timeout-<span class="a">def456</span>.md
-AUTH-<span class="g">in_progress</span>-P1-feature-oauth-refresh-<span class="a">a1b2c3</span>.md
-
-<span class="c"># moving a card is a rename. no database. no SaaS. no schema.</span>
-$ git mv AUTH-todo-...-def456.md AUTH-<span class="g">in_progress</span>-...-def456.md
+<pre><span class="c"># point Claude Code at your designs. walk away.</span>
+$ gitban take_sprint AUTH
+<span class="g">dispatching</span> 6 disposable agents in isolated worktrees…
+  ✓ oauth-refresh   <span class="g">spec met · 14/14 checks · reviewed</span>
+  ✓ token-rotation  <span class="g">spec met · TDD green · reviewed</span>
 
 <span class="c"># mark it done with an unchecked box? the gate refuses.</span>
 $ gitban complete_card def456
-<span class="a">BLOCKED</span>: card has unchecked, non-deferred checkboxes.</pre>
+<span class="r">BLOCKED</span>: unchecked, non-deferred checkboxes. agents can't fake "done".</pre>
   </div>
 </div></header>
 
-<section id="how"><div class="wrap">
-  <h2>Stigmergic, not orchestrated</h2>
-  <p class="sub">There's no scheduler and no central controller. Agents read the board, take a card, and write back what they did. Coordination emerges from the trail — like ants laying pheromones, not managers handing out tickets.</p>
-  <div class="grid3">
-    <div class="card"><span class="k">The trail</span><h3>Disposable agents</h3><p>Each agent picks up one card, does the work, and exits. No long-running agent straining to hold everything in context. The next one reads what the last one left behind.</p></div>
-    <div class="card"><span class="k">The gate</span><h3>Validation at the boundary</h3><p>Cards live in templates with required headings and checkbox labels. The MCP server validates on create and on complete. "Just trust me, it's done" doesn't pass.</p></div>
-    <div class="card"><span class="k">The substrate</span><h3>The filesystem is the bus</h3><p>State is in the filename. No database, no sync, no migrations. Disaster recovery is <code>git reset</code>. The whole history of how it was built is browsable, not lost to a ticketing tool.</p></div>
+<!-- ③ THE PROBLEM (PAS) -->
+<section id="problem" class="problem"><div class="wrap">
+  <p class="eyebrow">The problem</p>
+  <h2>AI writes your code now. You still can't ship it.</h2>
+  <p class="lead">By the end of 2025, ~41% of all code written was AI-generated — and almost none of it is production-ready. The result is a year of expensive, public failures.</p>
+  <div class="nightmares">
+    <div class="nm"><h4>It goes rogue — and lies</h4><p>An AI agent wiped a live production database during an explicit code freeze, fabricated thousands of fake users, then tried to cover it up.</p><span class="src">Replit · 2025</span></div>
+    <div class="nm"><h4>It breaks production</h4><p>An AI-assisted deploy took a major retailer down for hours — millions of lost orders — and triggered a mandate requiring senior-engineer sign-off on every AI deploy.</p><span class="src">reported, 2026</span></div>
+    <div class="nm"><h4>You pay, and ship nothing</h4><p>"Tokenmaxxing" burns enormous budgets for prototypes. One firm reportedly spent $500M on tokens in a month; 95% of AI initiatives never turn a profit.</p><span class="src">The Economist · 2026</span></div>
+    <div class="nm"><h4>It can't be maintained</h4><p>"The highest-risk code isn't code that doesn't work — it's code that works but can't be maintained." The only thing that understood it was the context window that wrote it.</p><span class="src">Towards Data Science · 2026</span></div>
   </div>
 </div></section>
 
+<!-- ④ THE REFRAME -->
+<section class="reframe"><div class="wrap">
+  <h2>The problem isn't AI.<br/>It's <span class="big">ungoverned</span> AI.</h2>
+  <p>Vibe coding is YOLO — accept the output, ship it, hope. Agentic engineering is the opposite: AI does the implementation, <b>you own the architecture, quality, and correctness</b>. gitban is the governance layer that makes the difference.</p>
+</div></section>
+
+<!-- ⑤ HOW IT WORKS -->
+<section id="how"><div class="wrap">
+  <p class="eyebrow">How it works</p>
+  <h2>Three steps. Technical docs are the interface.</h2>
+  <p class="lead">No new runtime, no orchestration code to write. You steer with the artifacts senior engineers already think in.</p>
+  <div class="steps">
+    <div class="step"><h4>Install the MCP</h4><p>A drop-in, <b>local &amp; hermetic</b> MCP server for Claude Code. Runs offline. <code>gitban setup</code> and you're live.</p></div>
+    <div class="step"><h4>Describe what you want</h4><p>At whatever altitude you choose — product, architecture, or design. gitban generates PRDs, ADRs, design docs, and specs <b>that read like the mind of an engineer</b>.</p></div>
+    <div class="step"><h4>Walk away</h4><p>Disposable agents build to spec in isolated worktrees, gated and adversarially reviewed. You get shippable code — and a chain of reasoning checked in beside it.</p></div>
+  </div>
+</div></section>
+
+<!-- ⑥ WHAT YOU GET -->
+<section id="value"><div class="wrap">
+  <p class="eyebrow">What you get</p>
+  <h2>One harness. Three answers.</h2>
+  <div class="buyers">
+    <div class="buyer">
+      <p class="who">For the engineer</p>
+      <ul>
+        <li><b>Builds to spec</b> <span>— correct by construction, not by luck</span></li>
+        <li><b>You steer at any altitude</b> <span>— product, architecture, or design</span></li>
+        <li><b>Reads like the mind of an engineer</b> <span>— specs &amp; reasoning, checked in</span></li>
+        <li><b>Can't fake "done"</b> <span>— completion is structurally unfalsifiable</span></li>
+      </ul>
+    </div>
+    <div class="buyer">
+      <p class="who">For the manager</p>
+      <ul>
+        <li><b>Shippable, not a 40-hour cleanup</b> <span>— TDD + adversarial review built in</span></li>
+        <li><b>Tens of thousands of lines per run</b> <span>— in hours, not weeks</span></li>
+        <li><b>Without the runaway token bill</b> <span>— context engineered, not brute-forced</span></li>
+        <li><b>Spend that actually ships</b> <span>— ROI, not tokenmaxxing</span></li>
+      </ul>
+    </div>
+    <div class="buyer">
+      <p class="who">For the enterprise</p>
+      <ul>
+        <li><b>Sovereign AI</b> <span>— hermetic, local, air-gapped</span></li>
+        <li><b>Zero telemetry</b> <span>— your IP never leaves your machine</span></li>
+        <li><b>Auditable by construction</b> <span>— proof-of-thought beside every change</span></li>
+        <li><b>The permission layer</b> <span>— how you allow AI in production</span></li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- ⑦ PROOF -->
+<section class="proof"><div class="wrap">
+  <p class="eyebrow">Proof</p>
+  <h2>gitban is built by gitban.</h2>
+  <p class="meta">Every feature shipped through its own validation gates — a browsable trail of <b>architecture decision records</b>, <b>archived sprints</b>, and a deep <b>test suite</b>, all in the repo. The reasoning behind each change is checked in beside the code, exactly as you'd get.</p>
+  <a class="btn btn-ghost" href="https://github.com/muunkky/gitban-mcp">Read the repo →</a>
+</div></section>
+
+<!-- ⑧ WHY GITBAN (comparison) -->
+<section id="why"><div class="wrap">
+  <p class="eyebrow">Why gitban</p>
+  <h2>Frameworks make you build the harness.<br/>Cloud engineers make you trust a black box.</h2>
+  <p class="lead">gitban <b>is</b> the harness — local, governed, and it ships production code. It runs on the agent you already use.</p>
+  <div style="overflow-x:auto">
+  <table class="cmp">
+    <thead><tr><th></th><th class="us">gitban</th><th>Devin</th><th>LangGraph</th><th>Copilot agent</th><th>Aider</th></tr></thead>
+    <tbody>
+      <tr><th>What it is</th><td class="us">drop-in harness</td><td>cloud engineer</td><td>framework</td><td>hosted agent</td><td>pair programmer</td></tr>
+      <tr><th>Runs</th><td class="us">local · hermetic · air-gapped</td><td>cloud SaaS</td><td>you host</td><td>GitHub cloud</td><td>local</td></tr>
+      <tr><th>Steer via</th><td class="us">your design docs</td><td>prompt + ACUs</td><td>code you write</td><td>NL → PR</td><td>chat per file</td></tr>
+      <tr><th>Quality gate</th><td class="us">at generation</td><td>minimal</td><td>you build it</td><td>post-hoc PR review</td><td>you review</td></tr>
+      <tr><th>SW lifecycle</th><td class="us">built in</td><td>task only</td><td>none</td><td>issue→PR</td><td>file edits</td></tr>
+      <tr><th>Your agent?</th><td class="us">Claude Code + any MCP</td><td>proprietary</td><td>any (wire it)</td><td>Copilot only</td><td>any</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="catclaim">Devin is a black box that costs <b>~25× Claude Code</b> and struggles with ambiguous requirements. gitban runs on Claude Code — cheaper, better reasoning — and fixes the requirements problem <b>at design-time</b>. It doesn't replace Claude Code; it's the <b>autopilot</b> for it.</p>
+  <p class="archlink">Curious how it actually works? <a href="https://github.com/muunkky/gitban-mcp/tree/main/docs/adr">Read the architecture &amp; ADRs →</a></p>
+</div></section>
+
+<!-- ⑨ PRICING -->
 <section id="pricing"><div class="wrap">
-  <h2>Pricing</h2>
-  <p class="sub">One line decides free vs. paid — not headcount.</p>
+  <p class="eyebrow">Pricing</p>
+  <h2>One line decides free vs. paid — not headcount.</h2>
   <p class="boundary">gitban is <b>free</b> for any individual's own work and for any non-commercial or open-source work, regardless of how many people collaborate. A paid license is required only when it's used <b>by or within an organization for commercial work</b>.</p>
   <div class="price-grid">
     <div class="tier">
@@ -168,54 +305,68 @@ $ gitban complete_card def456
         <li>Zero telemetry</li>
         <li>No license key required</li>
       </ul>
-      <a class="btn btn-ghost" href="#download">Download</a>
+      <a class="btn btn-ghost" href="https://github.com/muunkky/gitban-mcp">Download</a>
     </div>
     <div class="tier feature">
-      <span class="name">Team</span>
-      <div class="price">$50<small> / seat / mo</small></div>
-      <p class="who">Organizations using gitban for commercial work. A seat is one machine, not one repo.</p>
+      <span class="name">Commercial</span>
+      <div class="price">$5,000<small> / year</small></div>
+      <p class="who">Organizations using gitban for commercial work. The commercial-use license, flat.</p>
       <ul>
         <li>Everything in Solo</li>
         <li>Commercial-use license</li>
-        <li>Support</li>
-        <li>Billed annually</li>
+        <li>Priority support</li>
+        <li>Runs fully offline &amp; hermetic</li>
       </ul>
-      <a class="btn btn-primary" id="buy-team" href="mailto:cameronrout@gmail.com?subject=gitban%20Team%20license">Get Team</a>
+      <a class="btn btn-primary" id="buy-commercial" href="mailto:cameronrout@gmail.com?subject=gitban%20Commercial%20license">Get a license</a>
     </div>
     <div class="tier">
       <span class="name">Enterprise / Site</span>
-      <div class="price">$25,000<small> / yr</small></div>
-      <p class="who">Regulated, air-gapped, and large orgs needing a site license and compliance artifacts.</p>
+      <div class="price">$250,000<small> / year</small></div>
+      <p class="who">Regulated, air-gapped, and large organizations that need a site license and compliance artifacts.</p>
       <ul>
         <li>Unlimited internal seats</li>
         <li>MSA + IP/patent indemnification</li>
         <li>SBOM, signed builds, source escrow</li>
-        <li>Source-under-NDA for audit · air-gapped rights</li>
+        <li>Source-under-NDA for audit · air-gapped rights · SLA</li>
       </ul>
-      <a class="btn btn-ghost" id="buy-enterprise" href="mailto:cameronrout@gmail.com?subject=gitban%20Enterprise%20license">Contact sales</a>
+      <a class="btn btn-ghost" id="buy-enterprise" href="mailto:cameronrout@gmail.com?subject=gitban%20Enterprise%20site%20license">Contact sales</a>
     </div>
   </div>
 </div></section>
 
-<section id="download"><div class="wrap">
-  <h2>Download &amp; install</h2>
-  <p class="sub">A single signed binary with both entry points — the CLI and the MCP server. Solo runs free with no key; a Team/Enterprise license unlocks commercial use after an offline signature check.</p>
-  <div class="grid3">
-    <div class="card"><span class="k">Latest</span><h3>Signed binaries</h3><p>Per-OS builds (Linux, macOS, Windows) are published on GitHub Releases.<br/><br/><a class="btn btn-ghost" href="https://github.com/muunkky/gitban-mcp/releases">Releases →</a></p></div>
-    <div class="card"><span class="k">License</span><h3>Activate</h3><p>Drop your <code>license.lic</code> in your config dir (e.g. <code>~/.config/gitban/</code>) or point <code>GITBAN_LICENSE</code> at it. The check is local and offline — no phone-home.</p></div>
-    <div class="card"><span class="k">Docs</span><h3>Get started</h3><p>The README walks through wiring gitban into your agent as an MCP server.<br/><br/><a class="btn btn-ghost" href="https://github.com/muunkky/gitban-mcp#readme">README →</a></p></div>
+<!-- ⑩ ENTERPRISE BAND -->
+<section class="ent"><div class="wrap">
+  <p class="eyebrow">Enterprise</p>
+  <h2>Built for the buyer who can't send code to a cloud.</h2>
+  <div class="ent-grid">
+    <div><b>Sovereign &amp; air-gapped</b>Runs entirely on your metal, offline.</div>
+    <div><b>Proof-of-thought audit</b>Every decision checked in, immutable with confidential computing.</div>
+    <div><b>IP / patent indemnification</b>Patent-pending state-management core.</div>
+    <div><b>Policy &amp; attestation</b>OPA/Rego, KBS/attestation, NDA source-for-audit.</div>
   </div>
 </div></section>
 
+<!-- ⑪ FAQ -->
 <section id="faq" class="faq"><div class="wrap">
-  <h2>FAQ</h2>
-  <div class="sub"></div>
-  <details><summary>Is it really free?</summary><p>Yes — free for any individual's own work, and free for non-commercial and open-source projects regardless of how many people are involved. Public repositories carrying a <code>.gitban/</code> folder stay free forever. If you have a use that should be free and isn't, ask us.</p></details>
-  <details><summary>When do I need to pay?</summary><p>Only when gitban is used by or within an organization for commercial work. That's the single line — a commercial-use license, not a feature wall. A 500-person open-source project is free; a one-person company doing commercial work needs a paid license. The free and paid builds are the same software; you're buying the right to use it commercially, plus support.</p></details>
-  <details><summary>Is it open source?</summary><p>No. gitban ships as a closed binary — no public source drop, no OSI license. For Enterprise buyers who must audit during procurement, source is disclosed under NDA for security audit only (read, build, verify — never use, modify, or redistribute). It runs entirely offline with zero telemetry, so there's no phone-home behavior to inspect.</p></details>
-  <details><summary>Does it phone home?</summary><p>No. gitban runs entirely offline. License checks are a local, offline signature check against a key on your machine — no network call. Enterprise buyers can verify this directly during an NDA'd source audit.</p></details>
-  <details><summary>How is a license tied to me?</summary><p>A license is per seat = per machine. The key sits in your user config directory and is never committed to a repo. The free Solo build needs no key at all — it boots free when none is present.</p></details>
-  <details><summary>Can I contribute to a project that uses gitban?</summary><p>Always — and you never need gitban installed. The <code>.gitban/</code> state in any repo is plain, human-readable markdown you can read and edit with any editor. The folder signals capability; it never gates contribution.</p></details>
+  <p class="eyebrow">FAQ</p>
+  <h2>The questions senior engineers ask.</h2>
+  <details><summary>Won't it go off the rails and invent bad architecture?</summary><p>You own the architecture at design-time. gitban generates and you approve PRDs, ADRs, and design docs <em>before</em> any code is written — agents execute a vetted plan, not a vibe.</p></details>
+  <details><summary>How do I trust / review what it did?</summary><p>The reasoning ships with the code. Every structural decision is checked into the repo as plain text beside the diff — a human-readable audit trail that "reads like the mind of an engineer." No black box.</p></details>
+  <details><summary>Parallel agents — isn't that merge-conflict and race-condition hell?</summary><p>Worktree isolation is the design, not a side effect. Each agent works on its own clean, isolated branch and is destroyed when its task passes the gate. The context is clean every time.</p></details>
+  <details><summary>Will it actually be production-grade?</summary><p>Quality is the output of the process, not a cleanup afterward: TDD at design-time, adversarial review loops, and validation gates that block "done" until every check passes.</p></details>
+  <details><summary>Will my code leave my machine?</summary><p>No. gitban is hermetic and runs entirely offline with zero telemetry. Your code and IP never leave your machine — there is no cloud to leak to.</p></details>
+  <details><summary>Won't token costs explode?</summary><p>The opposite. Disposable, scoped agents get only the context they need instead of brute-forcing a giant window — so spend converts into shipped output instead of a runaway bill.</p></details>
+  <details><summary>When do I have to pay?</summary><p>Only when gitban is used by or within an organization for commercial work. Free for any individual, and free for non-commercial / open-source work at any headcount. A commercial-use license, not a feature wall.</p></details>
+  <details><summary>Is it open source? Does it phone home?</summary><p>No to both. gitban ships as a closed binary (source available to Enterprise under NDA for audit), and runs entirely offline with no network calls.</p></details>
+</div></section>
+
+<!-- ⑫ FINAL CTA -->
+<section class="final"><div class="wrap">
+  <h2>Don't let AI touch production without it.</h2>
+  <div class="cta-row" style="justify-content:center">
+    <a class="btn btn-primary" href="#pricing">Get a commercial license</a>
+    <a class="btn btn-ghost" href="https://github.com/muunkky/gitban-mcp">Download free (Solo)</a>
+  </div>
 </div></section>
 
 <footer><div class="wrap">
@@ -224,7 +375,7 @@ $ gitban complete_card def456
   <a href="https://github.com/muunkky/gitban-mcp/releases">Releases</a>
   <a href="#pricing">Pricing</a>
   <a href="mailto:cameronrout@gmail.com">Contact</a>
-  <span class="sp">© gitban · runs offline · zero telemetry</span>
+  <span class="sp">© gitban · the autopilot for Claude Code · runs offline · zero telemetry</span>
 </div></footer>
 </body>
 </html>
