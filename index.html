@@ -265,15 +265,18 @@ re-enable → closeout</span>
     </ul>
   </div>
   <div class="codewin">
-    <div class="bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i><span class="ttl">gitban — roadmap (git-tracked)</span></div>
-    <div class="body">m1 · Platform
- └─ s8 · Resilience            <span class="ok">✓ done</span>
- └─ s13 · Positioning          <span class="hl">▸ in progress</span>
-m3 · Commercialization
- └─ first-sale                 <span class="hl">▸ in progress</span>
-     └─ pricing &amp; licensing    <span class="ok">✓ done</span>
+    <div class="bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i><span class="ttl">git status — the board lives in git</span></div>
+    <div class="body"><span class="ok">$ git status</span>
+<span class="dim">On branch feat/checkout-flow · changes to be committed</span>
 
-<span class="dim">versioned with your code · shared via git push / pull</span></div>
+  new file:   <span class="hl">.gitban/roadmap/roadmap.yaml</span>
+  new file:   <span class="hl">.gitban/cards/todo/CHKOUT-a3f-webhook-retries.md</span>
+  renamed:    <span class="hl">.gitban/cards/{todo =&gt; in_progress}/CHKOUT-b7c-idempotency.md</span>
+  modified:   docs/adr/ADR-014-payment-fulfillment.md
+  modified:   src/fulfillment/webhook.py
+  modified:   tests/test_webhook.py
+
+<span class="dim"># the plan, the decisions, and the code — one commit, one history</span></div>
   </div>
 </div></section>
 
