@@ -181,7 +181,7 @@
     <a href="#pricing">Pricing</a>
     <a href="#ship">What you ship</a>
     <a href="#features">Features</a>
-    <a href="#">GitHub</a>
+    <a href="https://github.com/muunkky/gitban-releases">GitHub</a>
   </div>
   <a class="btn primary" href="#download">Install the MCP</a>
 </div></nav>
@@ -431,7 +431,7 @@ re-enable → closeout</span>
       <div class="name">Commercial</div>
       <div class="price">$5,000<span> / yr</span></div>
       <div class="who">Organizations using gitban for commercial work.</div>
-      <a class="btn primary" href="#">Get a license</a>
+      <a class="btn primary" href="https://buy.stripe.com/test_6oU5kD8YO9U3a703Xk1ck00">Get a license</a>
     </div>
     <div class="tier">
       <div class="name">Enterprise</div>
@@ -443,19 +443,49 @@ re-enable → closeout</span>
   <p class="boundary">Free for any individual and any non-commercial / open-source work, regardless of headcount. A paid license is required only when gitban is used by or within an organization for commercial work.</p>
 </div></section>
 
-<!-- INSTALL -->
+<!-- GET STARTED / DOWNLOAD -->
 <section id="download"><div class="wrap">
   <div class="sec-h">
     <div class="eyebrow">Get started</div>
-    <h2>One line, and it's in your Claude Code.</h2>
+    <h2>Download it and run free in 30 seconds.</h2>
+    <p>gitban boots free in Community with no license — grab the binary, point Claude Code at it, and you're running. A Commercial license unlocks commercial use later: same binary, no reinstall.</p>
   </div>
-  <div class="install">
-    <span class="cmd">claude mcp add gitban</span>
-    <span class="copy">copy</span>
+  <div class="stone" style="align-items:start">
+    <div class="copy">
+      <a class="btn primary" style="font-size:16px;padding:13px 22px" href="https://github.com/muunkky/gitban-releases/releases/latest/download/gitban-linux-x86_64">&#8595;&nbsp; Download — Linux x86_64</a>
+      <p style="color:var(--muted);font-size:13.5px;margin-top:14px">macOS &amp; Windows builds coming soon · <a href="https://github.com/muunkky/gitban-releases/releases" style="color:var(--accent);font-weight:600">all releases &amp; checksums &#8594;</a></p>
+      <ul>
+        <li><b>Runs free</b> — the Community tier needs no license; download and go.</li>
+        <li><b>One file</b> — a single self-contained binary, no runtime to install.</li>
+        <li><b>Verifiable</b> — every release ships <span class="mono">SHA256SUMS</span> so you can check the download.</li>
+      </ul>
+    </div>
+    <div class="codewin">
+      <div class="bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i><span class="ttl">install — Linux x86_64</span></div>
+      <div class="body"><span class="dim"># 1 · download + make executable</span>
+<span class="hl">curl -L -o gitban \
+  https://github.com/muunkky/gitban-releases/releases/latest/download/gitban-linux-x86_64</span>
+<span class="hl">chmod +x gitban</span>
+
+<span class="dim"># 2 · (optional) verify the download</span>
+<span class="hl">curl -LO https://github.com/muunkky/gitban-releases/releases/latest/download/SHA256SUMS</span>
+<span class="hl">sha256sum --check SHA256SUMS</span>
+
+<span class="dim"># 3 · wire it into Claude Code as an MCP server</span>
+<span class="hl">claude mcp add gitban -- "$PWD/gitban" mcp-server</span>
+<span class="ok">&#10003; gitban is live in Claude Code — free, Community tier</span></div>
+    </div>
   </div>
-  <div class="cta" style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap">
-    <a class="btn primary" href="#">Download — macOS · Linux · Windows</a>
-    <a class="btn ghost" href="#pricing">See pricing</a>
+
+  <!-- unlock commercial -->
+  <div style="margin-top:48px;border-top:1px solid var(--line);padding-top:42px;max-width:800px">
+    <div class="eyebrow">Unlock Commercial</div>
+    <h2 style="font-size:clamp(24px,3.4vw,34px);font-weight:800;margin-top:10px">Using it for work? Get a license.</h2>
+    <p style="color:var(--muted);font-size:17px;margin-top:12px">Checkout takes a minute and your <span class="mono">license.lic</span> is emailed instantly. Drop it in <span class="mono">~/.config/gitban/license.lic</span> (or set <span class="mono">GITBAN_LICENSE</span>) and commercial use unlocks on the next run — same binary, no reinstall.</p>
+    <div class="cta" style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+      <a class="btn primary" style="font-size:16px;padding:13px 22px" href="https://buy.stripe.com/test_6oU5kD8YO9U3a703Xk1ck00">Get a Commercial license — $5,000/yr &#8594;</a>
+      <a class="btn ghost" href="#pricing">Compare tiers</a>
+    </div>
   </div>
 </div></section>
 
@@ -472,7 +502,7 @@ re-enable → closeout</span>
 <footer><div class="wrap">
   <div class="logo">git<b>ban</b></div>
   <div class="links">
-    <a href="#">GitHub</a><a href="#">Releases</a><a href="#pricing">Pricing</a><a href="#">Contact</a>
+    <a href="https://github.com/muunkky/gitban-releases">GitHub</a><a href="https://github.com/muunkky/gitban-releases/releases">Releases</a><a href="#pricing">Pricing</a><a href="#download">Get started</a>
   </div>
   <div class="tag">runs offline · zero telemetry</div>
 </div></footer>
